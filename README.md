@@ -6,7 +6,7 @@ A real-time screen OCR tool that captures English anime subtitles and translates
 
 ## ⬇️ Download
 
-**[→ Download the latest release](https://github.com/yourusername/your-repo-name/releases/latest)**
+**[→ Download the latest release](https://github.com/ntw-cts/anime-translator/releases/latest)**
 
 No Python installation required. Just download, extract, and run `AnimeTranslator.exe`.
 
@@ -14,7 +14,7 @@ No Python installation required. Just download, extract, and run `AnimeTranslato
 
 ## 🚀 First-Time Setup
 
-1. Download and extract the `.zip` from the [Releases](https://github.com/yourusername/your-repo-name/releases/latest) page
+1. Download and extract the `.zip` from the [Releases](https://github.com/ntw-cts/anime-translator/releases/latest) page
 2. Run `AnimeTranslator.exe`
 3. If Windows shows a SmartScreen warning → click **"More info"** → **"Run anyway"**
 4. On first launch, the app will automatically download `english.bin` (~931 MB) for OCR context scoring — click **OK** to allow it, or **Cancel** to skip (app still works without it)
