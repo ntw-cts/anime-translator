@@ -1,0 +1,16 @@
+opencv-python
+easyocr
+requests
+rapidfuzz
+shapely
+symspellpy
+kenlm
+google-generativeai
+PyQt6
+PyOpenGL
+mss
+numpy
+transformers
+sentence-transformers
+sentencepiece
+pyinstaller
