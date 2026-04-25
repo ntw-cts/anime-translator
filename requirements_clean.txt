@@ -1,3 +1,4 @@
+# Core
 opencv-python
 easyocr
 requests
@@ -10,7 +11,13 @@ PyQt6
 PyOpenGL
 mss
 numpy
+
+# Translation engines
+torch
 transformers
 sentence-transformers
 sentencepiece
+sacremoses
+
+# Build tool (optional — only needed if building .exe)
 pyinstaller
