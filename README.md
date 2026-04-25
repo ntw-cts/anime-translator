@@ -122,7 +122,7 @@ translations_cache.json   ← auto-created, stores past translations
 ## 🧑‍💻 Build from Source
 
 ```bash
-git clone https://github.com/yourusername/your-repo-name.git
+git clone https://github.com/ntw-cts/anime-translator.git
 cd your-repo-name
 python -m venv venv
 venv\Scripts\activate
