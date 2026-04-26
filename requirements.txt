@@ -3,11 +3,6 @@
 #  Install with: pip install -r requirements.txt
 # ============================================================
 #
-#  NOTE: The following packages are NOT listed here because
-#  they are large and should be installed separately:
-#    pip install torch --index-url https://download.pytorch.org/whl/cpu
-#    pip install transformers sentencepiece sacremoses sentence-transformers
-#
 #  kenlm has no official PyPI wheel for Windows.
 #  Install a pre-built wheel from:
 #    https://github.com/kpu/kenlm/releases
@@ -39,6 +34,11 @@ rapidfuzz>=3.0.0
 # ── Geometry (subtitle bounding boxes) ─────────────────────
 shapely>=2.0.0
 
-# ── Translation APIs ────────────────────────────────────────
+# ── Translation & ML ────────────────────────────────────────
+torch
+transformers
+sentencepiece
+sacremoses
+sentence-transformers
 requests>=2.31.0
 google-generativeai>=0.5.0
