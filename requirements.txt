@@ -4,24 +4,18 @@
 # ============================================================
 #
 #  NOTE: The following packages are NOT listed here because
-#  the Setup Wizard downloads and installs them automatically
-#  on first launch:
-#    - torch
-#    - transformers
-#    - sentencepiece
-#    - sacremoses
-#    - sentence-transformers
-#
-#  To pre-install them manually before first launch:
+#  they are large and should be installed separately:
 #    pip install torch --index-url https://download.pytorch.org/whl/cpu
 #    pip install transformers sentencepiece sacremoses sentence-transformers
 #
+#  kenlm has no official PyPI wheel for Windows.
+#  Install a pre-built wheel from:
+#    https://github.com/kpu/kenlm/releases
+#  Or if you have Visual Studio Build Tools installed:
+#    pip install https://github.com/kpu/kenlm/archive/master.zip
+#
 #  Ollama (for Typhoon 1.5) must be installed manually:
 #    https://ollama.com  →  ollama pull scb10x/typhoon-translate1.5-4b
-#
-#  kenlm has no PyPI wheel — install from GitHub:
-#    pip install https://github.com/kpu/kenlm/archive/master.zip
-#  Or use a pre-built wheel for your Python version if available.
 # ============================================================
 
 # ── UI & window management ──────────────────────────────────
@@ -34,12 +28,12 @@ opencv-python>=4.8.0
 numpy>=1.24.0
 Pillow>=9.0.0
 
-# ── OCR engine (model weights downloaded by Setup Wizard) ───
+# ── OCR engine ──────────────────────────────────────────────
 easyocr>=1.7.1
 
 # ── OCR accuracy & text correction ─────────────────────────
 symspellpy>=6.7.0
-# kenlm — no PyPI wheel, see note above
+kenlm                        # see install note above
 rapidfuzz>=3.0.0
 
 # ── Geometry (subtitle bounding boxes) ─────────────────────
@@ -48,6 +42,3 @@ shapely>=2.0.0
 # ── Translation APIs ────────────────────────────────────────
 requests>=2.31.0
 google-generativeai>=0.5.0
-
-# ── Build tool (only needed if building .exe yourself) ──────
-# pyinstaller>=6.0.0
