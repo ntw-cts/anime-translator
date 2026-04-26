@@ -22,8 +22,18 @@ Create a virtual environment using Python 3.11:
 
 ```bash
 py -3.11 -m venv venv
+```
+
+Then activate it:
+
+```bash
 venv\Scripts\activate
 ```
+
+> ⚠️ If you see a script execution error in PowerShell, run this once to fix it, then activate again:
+> ```powershell
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
 
 ### 3 — Install kenlm
 
