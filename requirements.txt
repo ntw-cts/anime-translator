@@ -1,43 +1,35 @@
-# ============================================================
-#  Anime Subtitle Translator — requirements.txt
-#  Install with: pip install -r requirements.txt
+# Anime Subtitle Translator - requirements.txt
+# Install with: pip install -r requirements.txt
 #
-#  ⚠️  Python 3.10 or 3.11 is required.
-#  Python 3.12+ is NOT supported due to kenlm compatibility.
-# ============================================================
+# NOTE: Python 3.11 required. Python 3.12+ is NOT supported.
 #
-#  kenlm has no official PyPI wheel for Windows.
-#  Install a pre-built wheel from:
-#    https://github.com/kpu/kenlm/releases
-#  Or build from source (requires Visual Studio Build Tools):
-#    pip install https://github.com/kpu/kenlm/archive/master.zip
+# Install kenlm separately before running this file:
+#   pip install https://github.com/kpu/kenlm/archive/master.zip
 #
-#  Ollama (for Typhoon 1.5) must be installed manually:
-#    https://ollama.com  →  ollama pull scb10x/typhoon-translate1.5-4b
-# ============================================================
+# Ollama (for Typhoon 1.5) must be installed manually:
+#   https://ollama.com -> ollama pull scb10x/typhoon-translate1.5-4b
 
-# ── UI & window management ──────────────────────────────────
+# UI & window management
 PyQt6>=6.6.0
 PyOpenGL>=3.1.7
 
-# ── Screen capture & image processing ──────────────────────
+# Screen capture & image processing
 mss>=9.0.0
 opencv-python>=4.8.0
 numpy>=1.24.0
 Pillow>=9.0.0
 
-# ── OCR engine ──────────────────────────────────────────────
+# OCR engine
 easyocr>=1.7.1
 
-# ── OCR accuracy & text correction ─────────────────────────
+# OCR accuracy & text correction
 symspellpy>=6.7.0
-kenlm                        # see install note above
 rapidfuzz>=3.0.0
 
-# ── Geometry (subtitle bounding boxes) ─────────────────────
+# Geometry (subtitle bounding boxes)
 shapely>=2.0.0
 
-# ── Translation & ML ────────────────────────────────────────
+# Translation & ML
 torch
 transformers
 sentencepiece
