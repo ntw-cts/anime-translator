@@ -1,12 +1,15 @@
 # ============================================================
 #  Anime Subtitle Translator — requirements.txt
 #  Install with: pip install -r requirements.txt
+#
+#  ⚠️  Python 3.10 or 3.11 is required.
+#  Python 3.12+ is NOT supported due to kenlm compatibility.
 # ============================================================
 #
 #  kenlm has no official PyPI wheel for Windows.
 #  Install a pre-built wheel from:
 #    https://github.com/kpu/kenlm/releases
-#  Or if you have Visual Studio Build Tools installed:
+#  Or build from source (requires Visual Studio Build Tools):
 #    pip install https://github.com/kpu/kenlm/archive/master.zip
 #
 #  Ollama (for Typhoon 1.5) must be installed manually:

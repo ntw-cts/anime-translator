@@ -13,23 +13,35 @@ git clone https://github.com/ntw-cts/anime-translator.git
 cd anime-translator
 ```
 
-### 2 — Install dependencies
+### 2 — Install Python 3.10 or 3.11
+
+> ⚠️ **Python 3.12 and newer are NOT supported.** The `kenlm` dependency does not build on Python 3.12+.
+> Download Python 3.11 from [python.org](https://www.python.org/downloads/release/python-3119/).
+
+Create a virtual environment using Python 3.11:
+
+```bash
+py -3.11 -m venv venv
+venv\Scripts\activate
+```
+
+### 3 — Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
 > ⚠️ **kenlm requires a separate install step on Windows** — it has no official PyPI wheel.
-> Download a pre-built wheel for your Python version from the [kenlm releases page](https://github.com/kpu/kenlm/releases), then install it with:
-> ```bash
-> pip install kenlm‑0.x.x‑cpXXX‑cpXXX‑win_amd64.whl
-> ```
-> If you have Visual Studio Build Tools installed you can alternatively run:
+> Build from source (requires Visual Studio Build Tools):
 > ```bash
 > pip install https://github.com/kpu/kenlm/archive/master.zip
 > ```
+> Or download a pre-built wheel for your Python version from the [kenlm releases page](https://github.com/kpu/kenlm/releases):
+> ```bash
+> pip install kenlm-0.x.x-cp311-cp311-win_amd64.whl
+> ```
 
-### 3 — Download `english.bin` (required for OCR accuracy)
+### 4 — Download `english.bin` (required for OCR accuracy)
 
 This file is too large to include in the repo. Download it and place it in the **root of the project folder** (same folder as `stable.py`):
 
@@ -45,7 +57,7 @@ anime-translator/
 └── assets/
 ```
 
-### 4 — Run the app
+### 5 — Run the app
 
 ```bash
 python stable.py
@@ -119,7 +131,7 @@ python stable.py
 ## 🛠 System Requirements
 
 - Windows 10 / 11
-- Python 3.10 or newer
+- **Python 3.10 or 3.11** (3.12+ not supported)
 - ~2 GB free disk space
 - Internet connection (required for online translation engines)
 - GPU recommended but not required (used by EasyOCR and NLLB-200 if available)
