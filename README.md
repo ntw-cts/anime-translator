@@ -19,11 +19,21 @@ cd anime-translator
 pip install -r requirements.txt
 ```
 
+> ⚠️ **kenlm requires a separate install step on Windows** — it has no official PyPI wheel.
+> Download a pre-built wheel for your Python version from the [kenlm releases page](https://github.com/kpu/kenlm/releases), then install it with:
+> ```bash
+> pip install kenlm‑0.x.x‑cpXXX‑cpXXX‑win_amd64.whl
+> ```
+> If you have Visual Studio Build Tools installed you can alternatively run:
+> ```bash
+> pip install https://github.com/kpu/kenlm/archive/master.zip
+> ```
+
 ### 3 — Download `english.bin` (required for OCR accuracy)
 
 This file is too large to include in the repo. Download it and place it in the **root of the project folder** (same folder as `stable.py`):
 
-**[→ Download english.bin (~931 MB) from Google Drive](https://drive.google.com/file/d/1nXKi0XKLBoXbJbADaiXhGrZB17Ue11qx/view?usp=sharing)**
+**[→ Download english.bin (~931 MB) from Google Drive](YOUR_GOOGLE_DRIVE_LINK_HERE)**
 
 Your folder should look like this:
 
