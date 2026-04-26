@@ -53,7 +53,7 @@ pip install -r requirements.txt
 
 This file is too large to include in the repo. Download it and place it in the **root of the project folder** (same folder as `stable.py`):
 
-**[→ Download english.bin (~931 MB) from Google Drive](YOUR_GOOGLE_DRIVE_LINK_HERE)**
+**[→ Download english.bin (~931 MB) from Google Drive](https://drive.google.com/file/d/1nXKi0XKLBoXbJbADaiXhGrZB17Ue11qx/view?usp=sharing)**
 
 Your folder should look like this:
 
