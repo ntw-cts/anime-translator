@@ -33,51 +33,6 @@ _nllb_device = None
 _nllb_load_attempted = False
 _nllb_ready = False
 
-def _ensure_nllb_deps():
-    """Auto-install torch and transformers if not present (runs only when NLLB is first needed)."""
-    import subprocess
-    pkgs = {
-        'torch': 'torch',
-        'transformers': 'transformers',
-        'sentencepiece': 'sentencepiece',
-        'sacremoses': 'sacremoses',
-    }
-    missing = []
-    for import_name, pip_name in pkgs.items():
-        try:
-            __import__(import_name)
-        except ImportError:
-            missing.append(pip_name)
-
-    if not missing:
-        return True
-
-    print(f"[NLLB] Installing missing packages: {missing} — this may take a few minutes...")
-    try:
-        from PyQt6.QtWidgets import QMessageBox
-        msg = QMessageBox()
-        msg.setWindowTitle("NLLB-200 First-Time Setup")
-        msg.setText(
-            "NLLB-200 (Offline mode) requires additional packages:\n\n"
-            f"{', '.join(missing)}\n\n"
-            "These will be installed now (~1-2 GB).\n"
-            "This only happens once. The app may be unresponsive for a few minutes."
-        )
-        msg.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
-        if msg.exec() != QMessageBox.StandardButton.Ok:
-            print("[NLLB] User cancelled dependency install.")
-            return False
-    except Exception:
-        pass  # No UI available, proceed silently
-
-    try:
-        subprocess.check_call([sys.executable, "-m", "pip", "install"] + missing)
-        print("[NLLB] Dependencies installed successfully.")
-        return True
-    except Exception as e:
-        print(f"[NLLB] Failed to install dependencies: {e}")
-        return False
-
 def get_nllb_model():
     """Lazy-load the NLLB-200-distilled-600M model (only once, on background thread)."""
     global _nllb_model, _nllb_tokenizer, _nllb_device, _nllb_load_attempted, _nllb_ready
@@ -85,8 +40,6 @@ def get_nllb_model():
         return _nllb_model, _nllb_tokenizer, _nllb_device
     _nllb_load_attempted = True
     try:
-        if not _ensure_nllb_deps():
-            raise RuntimeError("Dependencies not installed.")
         import torch
         from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
         _nllb_device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -763,76 +716,6 @@ class SubtitleOverlay(QOpenGLWidget):
     subtitle_broadcast = pyqtSignal(str, int, int, int, int, float, float)
     start_heavy_task = pyqtSignal(np.ndarray, list, int, str, dict, list)
 
-    def _download_english_bin(self, dest_path):
-        """Download english.bin from Google Drive if not present. Shows a blocking progress dialog."""
-        from PyQt6.QtWidgets import QProgressDialog, QMessageBox
-        from PyQt6.QtCore import Qt
-        import requests
-
-        FILE_ID = "1nXKi0XKLBoXbJbADaiXhGrZB17Ue11qx"
-        url = f"https://drive.google.com/uc?export=download&id={FILE_ID}"
-
-        msg = QMessageBox()
-        msg.setWindowTitle("First-Time Setup")
-        msg.setText(
-            "english.bin is required for context scoring.\n\n"
-            "It will be downloaded now (~931 MB).\n"
-            "This only happens once."
-        )
-        msg.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
-        if msg.exec() != QMessageBox.StandardButton.Ok:
-            print("[INFO] User skipped english.bin download. KenLM will be disabled.")
-            return
-
-        progress = QProgressDialog("Downloading english.bin...", "Cancel", 0, 100)
-        progress.setWindowTitle("Downloading")
-        progress.setWindowModality(Qt.WindowModality.ApplicationModal)
-        progress.setMinimumWidth(400)
-        progress.show()
-
-        try:
-            # Google Drive large file needs confirm token
-            session = requests.Session()
-            response = session.get(url, stream=True)
-
-            # Handle Google Drive virus-scan warning page for large files
-            for key, value in response.cookies.items():
-                if key.startswith("download_warning"):
-                    url = f"https://drive.google.com/uc?export=download&confirm={value}&id={FILE_ID}"
-                    response = session.get(url, stream=True)
-                    break
-
-            total = int(response.headers.get('content-length', 0))
-            downloaded = 0
-            chunk_size = 1024 * 1024  # 1MB chunks
-
-            with open(dest_path, 'wb') as f:
-                for chunk in response.iter_content(chunk_size=chunk_size):
-                    if progress.wasCanceled():
-                        f.close()
-                        os.remove(dest_path)
-                        print("[INFO] Download cancelled. KenLM will be disabled.")
-                        return
-                    if chunk:
-                        f.write(chunk)
-                        downloaded += len(chunk)
-                        if total:
-                            pct = int(downloaded * 100 / total)
-                            progress.setValue(pct)
-                            progress.setLabelText(f"Downloading english.bin... {downloaded // (1024*1024)} MB / {total // (1024*1024)} MB")
-                        QApplication.processEvents()
-
-            progress.setValue(100)
-            print("[INFO] english.bin downloaded successfully.")
-
-        except Exception as e:
-            progress.close()
-            if os.path.exists(dest_path):
-                os.remove(dest_path)
-            QMessageBox.warning(None, "Download Failed",
-                f"Could not download english.bin:\n{e}\n\nKenLM context scoring will be disabled.")
-            print(f"[ERROR] english.bin download failed: {e}")
-
     def __init__(self, settings_dict):
         super().__init__()
         self.settings = settings_dict
@@ -930,13 +813,13 @@ class SubtitleOverlay(QOpenGLWidget):
         if self.thai_font is None:
             self.thai_font = QFont("Tahoma", 22, QFont.Weight.Bold)  # Tahoma has decent Thai coverage
 
-        # --- KENLM INITIALIZATION (with auto-download if missing) ---
-        model_path = resource_path('english.bin')
-        if not os.path.exists(model_path):
-            self._download_english_bin(model_path)
+        # --- KENLM INITIALIZATION ---
         try:
+            # Get the correct path for development or for the packed .exe
+            model_path = resource_path('english.bin') 
             self.kenlm_model = kenlm.Model(model_path)
-            print(f"[INFO] KenLM model 'english.bin' successfully initialized.")
+            clean_name = os.path.basename(model_path)
+            print(f"[INFO] KenLM model '{clean_name}' successfully initialized.")
         except OSError:
             print(f"[WARN] KenLM model 'english.bin' not found. Context scoring will be disabled.")
             self.kenlm_model = None

@@ -4,23 +4,42 @@ A real-time screen OCR tool that captures English anime subtitles and translates
 
 ---
 
-## ⬇️ Download
+## 🚀 Quick Start
 
-**[→ Download the latest release](https://github.com/ntw-cts/anime-translator/releases/latest)**
+### 1 — Clone the repo
 
-No Python installation required. Just download, extract, and run `AnimeTranslator.exe`.
+```bash
+git clone https://github.com/ntw-cts/anime-translator.git
+cd anime-translator
+```
 
----
+### 2 — Install dependencies
 
-## 🚀 First-Time Setup
+```bash
+pip install -r requirements.txt
+```
 
-1. Download and extract the `.zip` from the [Releases](https://github.com/ntw-cts/anime-translator/releases/latest) page
-2. Run `AnimeTranslator.exe`
-3. If Windows shows a SmartScreen warning → click **"More info"** → **"Run anyway"**
-4. On first launch, the app will automatically download `english.bin` (~931 MB) for OCR context scoring — click **OK** to allow it, or **Cancel** to skip (app still works without it)
-5. EasyOCR will also download its models on first run — this is automatic
+### 3 — Download `english.bin` (required for OCR accuracy)
 
-> 💡 All downloads only happen **once**. After that the app launches instantly.
+This file is too large to include in the repo. Download it and place it in the **root of the project folder** (same folder as `stable.py`):
+
+**[→ Download english.bin (~931 MB) from Google Drive](https://drive.google.com/file/d/1nXKi0XKLBoXbJbADaiXhGrZB17Ue11qx/view?usp=sharing)**
+
+Your folder should look like this:
+
+```
+anime-translator/
+├── stable.py
+├── requirements.txt
+├── english.bin        ← place here
+└── assets/
+```
+
+### 4 — Run the app
+
+```bash
+python stable.py
+```
 
 ---
 
@@ -31,27 +50,41 @@ No Python installation required. Just download, extract, and run `AnimeTranslato
 - **Transparent overlay** — Thai translation appears directly over your screen, no window switching
 - **Character Entity Shield** — Fetches character names from AniList to prevent names from being mistranslated
 - **Smart caching** — Translations are saved locally so repeated subtitles load instantly
+- **KenLM context scoring** — Picks the most natural OCR reading using a language model
 - **LaBSE tie-breaking** — When two engines produce different results, semantic similarity picks the better one
+- **SymSpell correction** — Auto-fixes OCR typos before translation
 
 ---
 
 ## 🔄 Translation Engines
 
-| Engine | Speed | Requires |
-|---|---|---|
-| **Auto** ⭐ | Smart | Nothing — recommended for most users |
-| **Google Translate** | Fast | Nothing |
-| **Gemini** | Balanced | Free Gemini API key |
-| **Typhoon 1.5** | Accurate | Local [Ollama](https://ollama.com) + Typhoon model |
-| **NLLB-200** | Offline | Python + ~1-2 GB download on first use |
+| Engine | Speed | Quality | Requires |
+|---|---|---|---|
+| **Auto** ⭐ | Smart | Best available | Nothing — recommended for most users |
+| **Google Translate** | Fast | Good | Nothing |
+| **Gemini** | Balanced | High | Free Gemini API key |
+| **NLLB-200** | Medium | Good | ~1.2 GB, downloads on first use |
+| **Typhoon 1.5** | Accurate | Highest | Manual Ollama setup (see below) |
 
-**Recommended: leave it on Auto** — it picks the best available engine automatically.
+**Recommended: leave it on Auto** — it uses NLLB-200 as the fast pass, then refines with Typhoon or Gemini if available, and falls back to Google Translate if needed.
+
+---
+
+## 🦬 Typhoon 1.5 Setup (Optional)
+
+1. Download and install [Ollama](https://ollama.com)
+2. Open a terminal and run:
+   ```bash
+   ollama pull scb10x/typhoon-translate1.5-4b
+   ```
+3. Make sure Ollama is running before starting the app
+4. Select **Typhoon 1.5** in the Translation Engine dropdown
+
+> 💡 Typhoon runs fully on your machine — no internet needed after the initial model download (~2.4 GB).
 
 ---
 
 ## 🔑 Getting a Free Gemini API Key (Optional)
-
-Improves **Auto** mode quality and enables the **Gemini** engine:
 
 1. Go to [aistudio.google.com](https://aistudio.google.com)
 2. Sign in and generate a free API key
@@ -73,62 +106,13 @@ Improves **Auto** mode quality and enables the **Gemini** engine:
 
 ---
 
-## ⚠️ NLLB-200 Offline Mode
-
-NLLB-200 requires additional packages (~1-2 GB) that are **not** bundled in the app. When you first select it, the app will ask to install them automatically via pip.
-
-**This requires Python to be installed on your machine.** Download it from [python.org](https://python.org) if needed.
-
-All other engines (Auto, Google Translate, Gemini) work without Python.
-
----
-
-## 🦬 Typhoon 1.5 Setup
-
-Typhoon runs locally via Ollama — no API key needed, but requires initial setup:
-
-1. Download and install [Ollama](https://ollama.com)
-2. Open a terminal and run:
-   ```bash
-   ollama pull scb10x/typhoon-translate1.5-4b
-   ```
-3. Make sure Ollama is running before starting the app
-4. Select **Typhoon 1.5 (Accurate)** in the Translation Engine dropdown
-
-> 💡 Typhoon runs fully on your machine — no internet needed after the initial model download.
-
----
-
-## 📁 File Structure
-
-After first run your folder will look like this:
-
-```
-AnimeTranslator.exe
-english.bin               ← auto-downloaded on first run (~931 MB)
-translations_cache.json   ← auto-created, stores past translations
-```
-
----
-
 ## 🛠 System Requirements
 
 - Windows 10 / 11
-- Internet connection (for first-time downloads and online translation engines)
-- GPU recommended but not required (used by EasyOCR and NLLB-200)
-
----
-
-## 🧑‍💻 Build from Source
-
-```bash
-git clone https://github.com/ntw-cts/anime-translator.git
-cd your-repo-name
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements_clean.txt
-python stable.py
-```
+- Python 3.10 or newer
+- ~2 GB free disk space
+- Internet connection (required for online translation engines)
+- GPU recommended but not required (used by EasyOCR and NLLB-200 if available)
 
 ---
 

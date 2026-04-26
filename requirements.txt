@@ -1,0 +1,53 @@
+# ============================================================
+#  Anime Subtitle Translator — requirements.txt
+#  Install with: pip install -r requirements.txt
+# ============================================================
+#
+#  NOTE: The following packages are NOT listed here because
+#  the Setup Wizard downloads and installs them automatically
+#  on first launch:
+#    - torch
+#    - transformers
+#    - sentencepiece
+#    - sacremoses
+#    - sentence-transformers
+#
+#  To pre-install them manually before first launch:
+#    pip install torch --index-url https://download.pytorch.org/whl/cpu
+#    pip install transformers sentencepiece sacremoses sentence-transformers
+#
+#  Ollama (for Typhoon 1.5) must be installed manually:
+#    https://ollama.com  →  ollama pull scb10x/typhoon-translate1.5-4b
+#
+#  kenlm has no PyPI wheel — install from GitHub:
+#    pip install https://github.com/kpu/kenlm/archive/master.zip
+#  Or use a pre-built wheel for your Python version if available.
+# ============================================================
+
+# ── UI & window management ──────────────────────────────────
+PyQt6>=6.6.0
+PyOpenGL>=3.1.7
+
+# ── Screen capture & image processing ──────────────────────
+mss>=9.0.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+Pillow>=9.0.0
+
+# ── OCR engine (model weights downloaded by Setup Wizard) ───
+easyocr>=1.7.1
+
+# ── OCR accuracy & text correction ─────────────────────────
+symspellpy>=6.7.0
+# kenlm — no PyPI wheel, see note above
+rapidfuzz>=3.0.0
+
+# ── Geometry (subtitle bounding boxes) ─────────────────────
+shapely>=2.0.0
+
+# ── Translation APIs ────────────────────────────────────────
+requests>=2.31.0
+google-generativeai>=0.5.0
+
+# ── Build tool (only needed if building .exe yourself) ──────
+# pyinstaller>=6.0.0
